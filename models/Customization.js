@@ -98,6 +98,8 @@ const CustomizationSchema = new Schema(
     cycleName: String,   // e.g. "Xplorer 20T"
     modelNo: String,     // model number if any
 
+    image_url: String,
+
     // User inputs
     userName: String,
     tagline: String,
@@ -159,8 +161,8 @@ stickersRaw: {
   secondaryColour: String,
   logo: String,
 
-  funImage: String,
-  sportyImage: String,
+    funImage: String,
+    sportyImage: String,
 
   selectedBaseImage: String, // ✅ NEW: freeze the exact preview image
 },

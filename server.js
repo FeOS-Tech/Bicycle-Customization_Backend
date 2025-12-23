@@ -10,6 +10,9 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
+//generate s3 sign url
+app.use("/api/s3", require("./routes/s3.routes"));
+
 // ⬇️ Use theme routes
 const themeRoutes = require("./routes/ThemeRoutes");
 app.use("/api/themes", themeRoutes);
