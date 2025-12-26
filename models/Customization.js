@@ -58,16 +58,40 @@ const { Schema } = mongoose;
 /**
  * For CMYK / hex info of the recoloured stickers
  */
-const StickerColorSchema = new Schema(
+// const StickerColorSchema = new Schema(
+//   {
+//     hex: { type: String },   // e.g. "#ff00aa"
+//     c: { type: Number },     // 0–100
+//     m: { type: Number },     // 0–100
+//     y: { type: Number },     // 0–100
+//     k: { type: Number },     // 0–100
+//   },
+//   { _id: false }
+// );
+
+const CmykSchema = new mongoose.Schema(
   {
-    hex: { type: String },   // e.g. "#ff00aa"
-    c: { type: Number },     // 0–100
-    m: { type: Number },     // 0–100
-    y: { type: Number },     // 0–100
-    k: { type: Number },     // 0–100
+    c: { type: Number, default: 0 },
+    m: { type: Number, default: 0 },
+    y: { type: Number, default: 0 },
+    k: { type: Number, default: 0 },
   },
   { _id: false }
 );
+
+const StickerColorsSchema = new mongoose.Schema({
+  paintHex: { type: String, default: null },
+  paintCmyk: { type: CmykSchema, default: () => ({}) },
+
+  decalHex: { type: String, default: null },
+  decalCmyk: { type: CmykSchema, default: () => ({}) },
+
+  primaryHex: { type: String, default: null },
+  primaryCmyk: { type: CmykSchema, default: () => ({}) },
+
+  secondaryHex: { type: String, default: null },
+  secondaryCmyk: { type: CmykSchema, default: () => ({}) },
+}, { _id: false });
 
 /**
  * For generic part selections (frame, grip, mudguard, brake lever, etc.)
@@ -111,6 +135,12 @@ const CustomizationSchema = new Schema(
 
     // Frame colour (kept for backward compatibility)
     frameColorIndex: Number,
+    brakeColorIndex: Number,
+    gripColorIndex: Number,
+    mudguardColorIndex: Number,
+    basketColorIndex:Number,
+    backrestColorIndex:Number,
+    
     frameColor: {
       colorName: String,
       colorCode: String,
@@ -135,37 +165,28 @@ const CustomizationSchema = new Schema(
       logo: String,
     },
 
-    // Which sticker keys are recolourable (from ThemeConfig.stickersMeta)
-    stickersMeta: {
-      paintKey: String,     // e.g. "carPaint"
-      decalKey: String,     // e.g. "carDecal"
-      highlightKey: String, // e.g. "primaryColour" or "secondaryColour"
-    },
-
-    // CMYK + hex chosen for each recolourable sticker
-    stickerColors: {
-      paint: { type: StickerColorSchema, default: undefined },     // Sticker 03
-      decal: { type: StickerColorSchema, default: undefined },     // Sticker 04
-      highlight: { type: StickerColorSchema, default: undefined }, // primary / secondary
-    },
-
     // For safety – keep full stickers JSON from ThemeConfig
-stickersRaw: {
-  sportyFrameComponent: String,
-  funFrameComponent: String,
+    stickersRaw: {
+      sportyFrameComponent: String,
+      funFrameComponent: String,
 
-  carBase: String,
-  carPaint: String,
-  carDecal: String,
-  primaryColour: String,
-  secondaryColour: String,
-  logo: String,
+      carBase: String,
+      carPaint: String,
+      carDecal: String,
+      primaryColour: String,
+      secondaryColour: String,
+      logo: String,
 
-    funImage: String,
-    sportyImage: String,
+      funImage: String,
+      sportyImage: String,
 
-  selectedBaseImage: String, // ✅ NEW: freeze the exact preview image
-},
+      selectedBaseImage: String, // ✅ NEW: freeze the exact preview image
+    },
+
+    stickerColors: {
+      type: StickerColorsSchema,
+      default: () => ({}),
+    }
   },
   { timestamps: true }
 );
