@@ -80,6 +80,9 @@ const CmykSchema = new mongoose.Schema(
 );
 
 const StickerColorsSchema = new mongoose.Schema({
+  baseHex: { type: String, default: null },
+  baseCmyk: { type: CmykSchema, default: () => ({}) },
+
   paintHex: { type: String, default: null },
   paintCmyk: { type: CmykSchema, default: () => ({}) },
 
@@ -171,10 +174,15 @@ const CustomizationSchema = new Schema(
       funFrameComponent: String,
 
       carBase: String,
+      isBaseStickerColorAllowed: { type: Boolean, default: false },
       carPaint: String,
+      isPaintStickerColorAllowed: { type: Boolean, default: false },
       carDecal: String,
+      isDecalStickerColorAllowed: { type: Boolean, default: false },
       primaryColour: String,
+      isPrimaryStickerColorAllowed: { type: Boolean, default: false },
       secondaryColour: String,
+      isSecondaryStickerColorAllowed: { type: Boolean, default: false },
       logo: String,
 
       funImage: String,

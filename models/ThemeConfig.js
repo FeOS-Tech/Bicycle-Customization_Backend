@@ -9,10 +9,15 @@ const StickerSchema = new Schema(
     sportyFrameComponent: { type: String },
     funFrameComponent: { type: String },
     carBase: { type: String },
+    isBaseStickerColorAllowed: { type: Boolean, default: false },
     carPaint: { type: String },
+    isPaintStickerColorAllowed: { type: Boolean, default: false },
     carDecal: { type: String },
+    isDecalStickerColorAllowed: { type: Boolean, default: false },
     primaryColour: { type: String },
+    isPrimaryStickerColorAllowed: { type: Boolean, default: false },
     secondaryColour: { type: String },
+    isSecondaryStickerColorAllowed: { type: Boolean, default: false },
     logo: { type: String },
 
     // For flora pink (special)
