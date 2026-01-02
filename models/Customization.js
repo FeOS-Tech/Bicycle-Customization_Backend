@@ -54,7 +54,7 @@
 // models/Customization.js
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-
+const Counter = require("./Counter");
 /**
  * For CMYK / hex info of the recoloured stickers
  */
@@ -113,6 +113,16 @@ const PartSelectionSchema = new Schema(
 
 const CustomizationSchema = new Schema(
   {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    customization_number: {
+      type: String,
+      unique: true,
+      index: true,
+    },
+
     // HIGH LEVEL
     brand: String,
 
@@ -198,5 +208,21 @@ const CustomizationSchema = new Schema(
   },
   { timestamps: true }
 );
+
+
+CustomizationSchema.pre("save", async function () {
+  // if already exists (update case)
+  if (this.customization_number) return;
+
+  const counter = await Counter.findOneAndUpdate(
+    { name: "customization" },
+    { $inc: { seq: 1 } },
+    { new: true, upsert: true }
+  );
+
+  const padded = String(counter.seq).padStart(3, "0");
+
+  this.customization_number = `TICUS${padded}`;
+});
 
 module.exports = mongoose.model("Customization", CustomizationSchema);
