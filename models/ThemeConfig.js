@@ -51,6 +51,11 @@ const PartSchema = new Schema(
   { _id: false }
 );
 
+const InternalThemeSchema = new Schema({
+  name: { type: String, required: true },
+  image: { type: String, required: true }
+});
+
 // Main theme config schema
 const ThemeConfigSchema = new Schema(
   {
@@ -68,6 +73,11 @@ const ThemeConfigSchema = new Schema(
     productDetails: { type: String, default: "" },
     manufacturer: { type: String, default: "" },
     technicalSpecification: { type: String, default: "" },
+
+    internalThemes: {
+      type: [InternalThemeSchema],
+      default: []
+    },
 
     assets: {
       parts: { type: [PartSchema], default: [] }
