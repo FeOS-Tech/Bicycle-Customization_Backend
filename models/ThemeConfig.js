@@ -36,7 +36,11 @@ const ColorSchema = new Schema(
     colorCode: { type: String, default: "" },
     imageUrl: { type: String, required: true },
     fileName: { type: String, required: true },
-    stickers: { type: StickerSchema, default: undefined }
+    stickers: { type: StickerSchema, default: undefined },
+
+    // flags
+    isSportyEnabled: { type: Boolean, default: true },
+    isFunEnabled: { type: Boolean, default: true }
   },
   { _id: false }
 );
