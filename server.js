@@ -9,6 +9,8 @@ const app = express();
 connectDB();
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 
 //generate s3 sign url
 app.use("/api/s3", require("./routes/s3.routes"));
@@ -25,6 +27,9 @@ app.get("/", (req, res) => {
 });
 const customizationRoutes = require("./routes/CustomizationRoutes");
 app.use("/api/customizations", customizationRoutes);
+const  paymentRoutes = require("./routes/pamentRoutes")
+app.use("/api/payment",paymentRoutes)
+app.use("/api/payment/worldline", paymentRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
