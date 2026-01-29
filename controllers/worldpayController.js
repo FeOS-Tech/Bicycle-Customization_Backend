@@ -476,6 +476,7 @@ const Order = require("../models/Order");
 const Payment = require("../models/Payment");
 const generateInvoiceNumber = require("../utils/invoiceGenerator");
 
+
 exports.worldlineResponse = async (req, res) => {
   try {
     console.log("========== WORLDLINE CALLBACK ==========");
@@ -485,7 +486,7 @@ exports.worldlineResponse = async (req, res) => {
     const msg = req.body.msg;
     if (!msg) {
       console.error("❌ msg missing");
-      return res.redirect("http://localhost:5173/payment-failed");
+      return res.redirect(`${process.env.FRONTEND_URL}/payment-failed`);
     }
 
     console.log("RAW MSG:", msg);
@@ -542,7 +543,7 @@ exports.worldlineResponse = async (req, res) => {
 
     if (calculatedHash !== response_hash) {
       console.error("❌ HASH MISMATCH");
-      return res.redirect("http://localhost:5173/payment-failed");
+      return res.redirect(`${process.env.FRONTEND_URL}/payment-failed`);
     }
 
     console.log("✅ HASH VERIFIED");
@@ -551,7 +552,7 @@ exports.worldlineResponse = async (req, res) => {
     const order = await Order.findById(clnt_txn_ref);
     if (!order) {
       console.error("❌ Order not found");
-      return res.redirect("http://localhost:5173/payment-failed");
+      return res.redirect(`${process.env.FRONTEND_URL}/payment-failed`);
     }
 
     if (txn_status === "0300") {
@@ -568,7 +569,7 @@ exports.worldlineResponse = async (req, res) => {
       });
 
       return res.redirect(
-        `http://localhost:5173/payment-success?order=${order._id}`
+        `${process.env.FRONTEND_URL}/payment-success?order=${order._id}`
       );
     }
 
@@ -576,10 +577,10 @@ exports.worldlineResponse = async (req, res) => {
     order.status = "FAILED";
     await order.save();
 
-    return res.redirect("http://localhost:5173/payment-failed");
+    return res.redirect(`${process.env.FRONTEND_URL}/payment-failed`);
 
   } catch (err) {
     console.error("Worldline callback error:", err);
-    return res.redirect("http://localhost:5173/payment-failed");
+    return res.redirect(`${process.env.FRONTEND_URL}/payment-failed`);
   }
 };
