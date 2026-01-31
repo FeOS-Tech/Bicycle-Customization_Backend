@@ -29,6 +29,19 @@ const StickerSchema = new Schema(
   { _id: false }
 );
 
+const SingleCyclePartsSchema = new Schema(
+  {
+    partCode: String,        // e.g. "F01", "C05"
+    partName: String,        // e.g. "Frame", "Grip"
+    colorName: String,
+    colorCode: String,
+    imageUrl: String,
+    fileName: String,
+    partIdx:Number, 
+  },
+  { _id: false }
+);
+
 // Colors inside each part
 const ColorSchema = new Schema(
   {
@@ -37,6 +50,13 @@ const ColorSchema = new Schema(
     imageUrl: { type: String, required: true },
     fileName: { type: String, required: true },
     stickers: { type: StickerSchema, default: undefined },
+    cycle_parts: {  
+      grip: { type: SingleCyclePartsSchema, default: undefined },
+      mudguard: { type: SingleCyclePartsSchema, default: undefined },
+      breaklever: { type: SingleCyclePartsSchema, default: undefined },
+      basket: { type: SingleCyclePartsSchema, default: undefined },
+      backrest: { type: SingleCyclePartsSchema, default: undefined }
+    },
 
     // flags
     isSportyEnabled: { type: Boolean, default: true },

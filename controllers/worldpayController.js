@@ -475,6 +475,9 @@ const crypto = require("crypto");
 const Order = require("../models/Order");
 const Payment = require("../models/Payment");
 const generateInvoiceNumber = require("../utils/invoiceGenerator");
+const { sendEmail } = require("../services/email.service");
+const customerOrderConfirmation = require('../templates/emails/customerOrderConfirmation');
+const ownerOrderNotification = require('../templates/emails/ownerOrderNotification');
 
 
 exports.worldlineResponse = async (req, res) => {
@@ -549,7 +552,15 @@ exports.worldlineResponse = async (req, res) => {
     console.log("✅ HASH VERIFIED");
 
     // 🧾 Order reference
-    const order = await Order.findById(clnt_txn_ref);
+    const order = await Order.findById(clnt_txn_ref).populate({
+      path: 'customizationId',
+      populate: {
+        path: 'userId',
+        model: 'User'
+      }
+    })
+    .exec();
+
     if (!order) {
       console.error("❌ Order not found");
       return res.redirect(`${process.env.FRONTEND_URL}/payment-failed`);
@@ -558,14 +569,33 @@ exports.worldlineResponse = async (req, res) => {
     if (txn_status === "0300") {
       order.status = "PAID";
       await order.save();
-
       await Payment.create({
         orderId: order._id,
+        userSid:order.userSid,
+        invoiceNumber:order.invoiceNumber,
         gateway: "Worldline",
         transactionId: tpsl_txn_id,
         status: "SUCCESS",
         paidAmount: txn_amt,
         rawResponse: msg
+      });
+      const customization = order.customizationId;
+      const userDetails = customization.userId;
+
+      // Generate email templates
+      const customerEmailHtml = customerOrderConfirmation(order, customization, userDetails);
+      const ownerEmailHtml = ownerOrderNotification(order, customization, userDetails);
+
+      await sendEmail({
+        to: 'harunhameem@gmail.com',
+        subject: 'Order Confirmation - Custom Cycle Order',
+        html: customerEmailHtml
+      });
+
+      await sendEmail({
+        to: 'harunhameem@gmail.com',
+        subject: `New Order Received - #${order.invoiceNumber || order._id}`,
+        html: ownerEmailHtml
       });
 
       return res.redirect(

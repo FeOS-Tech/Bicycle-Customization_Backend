@@ -72,6 +72,7 @@ const Customization = require("../models/Customization");
 const ThemeConfig = require("../models/ThemeConfig");
 const Order = require("../models/Order");
 const generateToken = require("../utils/generateToken");
+const generateInvoiceNumber = require("../utils/invoiceGenerator");
 
 // exports.createPayment = async (req, res) => {
 //   try {
@@ -154,13 +155,14 @@ exports.createPayment = async (req, res) => {
     }
 
     const amount = Number(theme.price).toFixed(2); // 🔥 FIXED
-
+    const invoiceNumber = await generateInvoiceNumber();
     const order = await Order.create({
       userSid,
       customizationId,
       amount,
       currency: "INR",
       status: "PENDING",
+      invoiceNumber:invoiceNumber
     });
 
     const token = generateToken({
@@ -191,7 +193,7 @@ exports.createPayment = async (req, res) => {
           txnId: order._id.toString(),
           items: [
             {
-              itemId: customization.customization_number,
+              itemId: "First",
               amount,                // 🔥 SAME FORMAT
               comAmt: "0",
             },

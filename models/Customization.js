@@ -107,6 +107,7 @@ const PartSelectionSchema = new Schema(
     colorCode: String,
     imageUrl: String,
     fileName: String,
+    partIdx:Number,
   },
   { _id: false }
 );
@@ -160,11 +161,14 @@ const CustomizationSchema = new Schema(
       imageUrl: String,
       fileName: String,
     },
-
     // All selected parts (frame, grip, mudguard, brake lever…)
     selectedParts: {
-      type: [PartSelectionSchema],
-      default: [],
+      frame: { type: PartSelectionSchema, default: undefined },
+      grip: { type: PartSelectionSchema, default: undefined },
+      mudguard: { type: PartSelectionSchema, default: undefined },
+      breaklever: { type: PartSelectionSchema, default: undefined },
+      basket: { type: PartSelectionSchema, default: undefined },
+      backrest: { type: PartSelectionSchema, default: undefined }
     },
 
     // All image layers used to render

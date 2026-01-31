@@ -162,13 +162,22 @@ module.exports = function generateToken({
   salt,
 }) {
   const raw = [
-    merchantId,
-    txnId,
-    Number(amount).toFixed(2), // IMPORTANT
-    consumerId,
-    email,
-    mobile,
-    "", "", "", "", "", "", "", "", "",
+    merchantId,// 1
+    txnId,//2 txn
+    Number(amount).toFixed(2), // 3 amount
+    "",// 4 accNO
+    consumerId,// 5 cons id
+    mobile,// 6 cons mob
+    email,// 7 cons email
+    "",// 8 cons card start date
+    "",// 9 cons cars end date 
+    "",// 10 cons max amo
+    "",// 11 amo type
+    "",// 12 frequency
+    "",// 13 card number 
+    "",// 14 exp month 
+    "",// 15 exp year 
+    "",// 16 card cvv
     salt,
   ].join("|");
 
