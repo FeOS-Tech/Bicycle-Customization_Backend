@@ -478,7 +478,7 @@ const generateInvoiceNumber = require("../utils/invoiceGenerator");
 const { sendEmail } = require("../services/email.service");
 const customerOrderConfirmation = require('../templates/emails/customerOrderConfirmation');
 const ownerOrderNotification = require('../templates/emails/ownerOrderNotification');
-
+const Customization = require("../models/Customization");
 
 exports.worldlineResponse = async (req, res) => {
   try {
@@ -581,7 +581,13 @@ exports.worldlineResponse = async (req, res) => {
       });
       const customization = order.customizationId;
       const userDetails = customization.userId;
-
+      await Customization.findByIdAndUpdate(
+        customization._id,
+        { 
+          order_status: 'PLACED',
+          isPlaced:true
+        }
+      );
       // Generate email templates
       const customerEmailHtml = customerOrderConfirmation(order, customization, userDetails);
       const ownerEmailHtml = ownerOrderNotification(order, customization, userDetails);

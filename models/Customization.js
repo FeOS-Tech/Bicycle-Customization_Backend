@@ -205,6 +205,17 @@ const CustomizationSchema = new Schema(
       selectedBaseImage: String, // ✅ NEW: freeze the exact preview image
     },
 
+    order_status: {
+      type: String,
+      default: 'NEW',
+      enum: ['NEW', 'DRAFT', 'PLACED']
+    },
+
+    isPlaced: {
+      type: Boolean,
+      default: false
+    },
+
     stickerColors: {
       type: StickerColorsSchema,
       default: () => ({}),
