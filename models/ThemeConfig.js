@@ -50,12 +50,21 @@ const ColorSchema = new Schema(
     imageUrl: { type: String, required: true },
     fileName: { type: String, required: true },
     stickers: { type: StickerSchema, default: undefined },
-    cycle_parts: {  
-      grip: { type: SingleCyclePartsSchema, default: undefined },
-      mudguard: { type: SingleCyclePartsSchema, default: undefined },
-      breaklever: { type: SingleCyclePartsSchema, default: undefined },
-      basket: { type: SingleCyclePartsSchema, default: undefined },
-      backrest: { type: SingleCyclePartsSchema, default: undefined }
+    cycle_parts: { 
+      sporty:{
+        grip: { type: SingleCyclePartsSchema, default: undefined },
+        mudguard: { type: SingleCyclePartsSchema, default: undefined },
+        breaklever: { type: SingleCyclePartsSchema, default: undefined },
+        basket: { type: SingleCyclePartsSchema, default: undefined },
+        backrest: { type: SingleCyclePartsSchema, default: undefined }
+      },
+      fun:{
+        grip: { type: SingleCyclePartsSchema, default: undefined },
+        mudguard: { type: SingleCyclePartsSchema, default: undefined },
+        breaklever: { type: SingleCyclePartsSchema, default: undefined },
+        basket: { type: SingleCyclePartsSchema, default: undefined },
+        backrest: { type: SingleCyclePartsSchema, default: undefined }
+      }
     },
 
     // flags
