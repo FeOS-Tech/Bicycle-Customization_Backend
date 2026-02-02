@@ -581,6 +581,7 @@ exports.worldlineResponse = async (req, res) => {
       });
       const customization = order.customizationId;
       const userDetails = customization.userId;
+      const payment = await Payment.findOne({orderId:order._id});
       await Customization.findByIdAndUpdate(
         customization._id,
         { 
@@ -589,8 +590,8 @@ exports.worldlineResponse = async (req, res) => {
         }
       );
       // Generate email templates
-      const customerEmailHtml = customerOrderConfirmation(order, customization, userDetails);
-      const ownerEmailHtml = ownerOrderNotification(order, customization, userDetails);
+      const customerEmailHtml = customerOrderConfirmation(order, customization, userDetails,payment);
+      const ownerEmailHtml = ownerOrderNotification(order, customization, userDetails,payment);
 
       await sendEmail({
         to: 'harunhameem@gmail.com',

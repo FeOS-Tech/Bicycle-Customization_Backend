@@ -1,4 +1,4 @@
-const ownerOrderNotification = (order, customization, userDetails) => {
+const ownerOrderNotification = (order, customization, userDetails,payment) => {
   let count = 0;
   const formatCmyk = (cmyk) => {
     if (!cmyk || (cmyk.c === 0 && cmyk.m === 0 && cmyk.y === 0 && cmyk.k === 0)) {
@@ -75,13 +75,13 @@ const ownerOrderNotification = (order, customization, userDetails) => {
         }
         .title-section {
           background-color: white;
-          padding: 20px;
+          padding:10px 20px;
           border-bottom: 1px solid #e0e0e0;
         }
         .title {
           font-size: 20px;
           font-weight: 600;
-          color: #333;
+          color: rgb(134, 188, 34);
           margin-bottom: 5px;
         }
         .subtitle {
@@ -110,7 +110,7 @@ const ownerOrderNotification = (order, customization, userDetails) => {
           border-bottom: none;
         }
         .detail-table td {
-          padding: 10px 0;
+          padding: 5px 0;
           font-size: 14px;
         }
         .detail-label {
@@ -236,7 +236,7 @@ const ownerOrderNotification = (order, customization, userDetails) => {
         <tr>
           <td>
             <div class="title-section">
-              <div class="title">New Order Received! 🎉</div>
+              <div class="title">New Order Received!</div>
               <div class="subtitle">A new custom cycle order has been placed</div>
             </div>
           </td>
@@ -258,7 +258,7 @@ const ownerOrderNotification = (order, customization, userDetails) => {
                 </tr>
                 <tr>
                   <td class="detail-label">Transaction ID</td>
-                  <td class="detail-value">${order.transactionId || order.paymentId || 'N/A'}</td>
+                  <td class="detail-value">${payment.transactionId || order.paymentId || 'N/A'}</td>
                 </tr>
                 <tr>
                   <td class="detail-label">Job ID</td>
@@ -315,6 +315,13 @@ const ownerOrderNotification = (order, customization, userDetails) => {
                   <td class="detail-value">${customization.brand || 'Track & Trail'}</td>
                 </tr>
                 <tr>
+                  <td class="detail-label">Type</td>
+                  <td class="detail-value">${customization.mode
+                    ? customization.mode.charAt(0).toUpperCase() + customization.mode.slice(1).toLowerCase()
+                    : '-'}
+                  </td>
+                </tr>
+                <tr>
                   <td class="detail-label">Size</td>
                   <td class="detail-value">${customization.bikeSize || 'Medium'}</td>
                 </tr>
@@ -358,6 +365,20 @@ const ownerOrderNotification = (order, customization, userDetails) => {
                           <td class="col-detail-label">Mudguard</td>
                           <td class="col-detail-value">${customization.selectedParts.mudguard.colorName}</td>
                         </tr>
+                        ${customization.mode === 'fun' ? `
+                          <tr>
+                            <td class="col-detail-label">Basket</td>
+                            <td class="col-detail-value">
+                              ${customization.selectedParts?.basket?.colorName || '-'}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="col-detail-label">Backrest</td>
+                            <td class="col-detail-value">
+                              ${customization.selectedParts?.backrest?.colorName || '-'}
+                            </td>
+                          </tr>
+                        ` : ''}
                       </table>
                     </div>
                   </td>

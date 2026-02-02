@@ -1,4 +1,4 @@
-const customerOrderConfirmation = (order, customization, userDetails) => {
+const customerOrderConfirmation = (order, customization, userDetails,payment) => {
   let count = 0;
   return `
     <!DOCTYPE html>
@@ -73,13 +73,13 @@ const customerOrderConfirmation = (order, customization, userDetails) => {
         }
         .title-section {
           background-color: white;
-          padding: 20px;
+          padding: 10px 20px;
           border-bottom: 1px solid #e0e0e0;
         }
         .title {
           font-size: 20px;
           font-weight: 600;
-          color: #333;
+          color: rgb(134, 188, 34);
           margin-bottom: 5px;
         }
         .subtitle {
@@ -108,7 +108,7 @@ const customerOrderConfirmation = (order, customization, userDetails) => {
           border-bottom: none;
         }
         .detail-table td {
-          padding: 10px 0;
+          padding: 5px 0;
           font-size: 14px;
         }
         .detail-label {
@@ -124,7 +124,7 @@ const customerOrderConfirmation = (order, customization, userDetails) => {
         }
         .total-section {
           background-color: white;
-          padding: 30px 20px;
+          padding: 10px 20px;
           text-align: center;
           border-bottom: 3px solid #e0e0e0;
         }
@@ -255,7 +255,7 @@ const customerOrderConfirmation = (order, customization, userDetails) => {
                 </tr>
                 <tr>
                   <td class="detail-label">Transaction ID</td>
-                  <td class="detail-value">${order.transactionId || order.paymentId || 'N/A'}</td>
+                  <td class="detail-value">${payment.transactionId || order.paymentId || 'N/A'}</td>
                 </tr>
                 <tr>
                   <td class="detail-label">Job ID</td>
@@ -293,6 +293,13 @@ const customerOrderConfirmation = (order, customization, userDetails) => {
                 <tr>
                   <td class="detail-label">Brand</td>
                   <td class="detail-value">${customization.brand || 'Track & Trail'}</td>
+                </tr>
+                <tr>
+                  <td class="detail-label">Type</td>
+                  <td class="detail-value">${customization.mode
+                    ? customization.mode.charAt(0).toUpperCase() + customization.mode.slice(1).toLowerCase()
+                    : '-'}
+                  </td>
                 </tr>
                 <tr>
                   <td class="detail-label">Size</td>
@@ -338,6 +345,24 @@ const customerOrderConfirmation = (order, customization, userDetails) => {
                           <td class="col-detail-label">Mudguard</td>
                           <td class="col-detail-value">${customization.selectedParts.mudguard.colorName}</td>
                         </tr>
+                        <tr>
+                          <td class="col-detail-label">Mudguard</td>
+                          <td class="col-detail-value">${customization.selectedParts.mudguard.colorName}</td>
+                        </tr>
+                        ${customization.mode === 'fun' ? `
+                          <tr>
+                            <td class="col-detail-label">Basket</td>
+                            <td class="col-detail-value">
+                              ${customization.selectedParts?.basket?.colorName || '-'}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="col-detail-label">Backrest</td>
+                            <td class="col-detail-value">
+                              ${customization.selectedParts?.backrest?.colorName || '-'}
+                            </td>
+                          </tr>
+                        ` : ''}
                       </table>
                     </div>
                   </td>
