@@ -222,7 +222,7 @@ const ownerOrderNotification = (order, customization, userDetails,payment) => {
             <table class="header-table" cellpadding="0" cellspacing="0">
               <tr>
                 <td style="width: 50%;">
-                  <img src="https://img.sanishtech.com/u/8c12ef9082036d304da41a62fb33e3bc.png" alt="Track & Trail" style="max-width: 150px; height: auto;" />
+                  <img src="https://customize.trackandtrail.in/logo.png" alt="Track & Trail" style="max-width: 150px; height: auto;" />
                 </td>
                 <td style="width: 50%;">
                   <div class="header-date">${new Date(order.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
@@ -441,7 +441,7 @@ const ownerOrderNotification = (order, customization, userDetails,payment) => {
         <tr>
           <td>
             <div class="footer">
-              <img src="https://img.sanishtech.com/u/8c12ef9082036d304da41a62fb33e3bc.png" alt="Track & Trail" style="max-width: 150px; height: auto;" />
+              <img src="https://customize.trackandtrail.in/logo.png" alt="Track & Trail" style="max-width: 150px; height: auto;" />
               <div class="footer-text">
                 Track & Trail - Custom Cycle Orders<br>
                 Please process this order at your earliest convenience

@@ -594,13 +594,13 @@ exports.worldlineResponse = async (req, res) => {
       const ownerEmailHtml = ownerOrderNotification(order, customization, userDetails,payment);
 
       await sendEmail({
-        to: 'harunhameem@gmail.com',
+        to: userDetails.email,
         subject: 'Order Confirmation - Custom Cycle Order',
         html: customerEmailHtml
       });
 
       await sendEmail({
-        to: 'harunhameem@gmail.com',
+        to: process.env.SENDER_TO_EMAIL,
         subject: `New Order Received - #${order.invoiceNumber || order._id}`,
         html: ownerEmailHtml
       });
